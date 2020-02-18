@@ -50,12 +50,21 @@ onMount(async () => {
 		let code =''
 		switch(diagramType){
 			case 'FlowChart' : 
-			code = `graph TD
-	A[Christmas] -->|Get money| B(Go shopping)
-	B --> C{Let me think}
-	C -->|One| D[Laptop]
-	C -->|Two| E[iPhone]
-	C -->|Three| F[fa:fa-car Car]
+			code = `graph LR
+  RMG[Relational Model Graphs] --> RE[Relations]
+  RMG[Relational Model Graphs] --> SE[Searches]
+  GR[Graphs] --> RE[Relations]
+  GR[Graphs] --> SE[Searches]
+  DG[Dashboard Groups] --> DA[Dashboard]
+  DA[Dashboard] -.-> SE[Searches]
+  DA[Dashboard] -.saved filters.-> IP[Index Patterns]
+  VI[Visualization] -.-> SE[Searches]
+  SE[Searches] --> IP[Index Patterns]
+  VI[Visualization] -.saved filters.-> IP[Index Patterns]  
+  RE[Relations] --> SE[Searches]
+  RE[Relations] --> EIDS[EIDS]
+  IP[Index Patterns] -.-> DS[Data Sources]
+					
 					`;
 			break;
 
