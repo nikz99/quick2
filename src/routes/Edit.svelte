@@ -27,8 +27,8 @@ onMount(async () => {
 	// export let expected = '';
 	export let params = {};
 
-	function loadFlowChart(){
-		loadSampleDiagram('FlowChart');
+	function loadDependencyGraph(){
+		loadSampleDiagram('DependencyGraph');
 	}
 	function loadSequenceDiagram(){
 		loadSampleDiagram('SequenceDiagram');
@@ -49,7 +49,7 @@ onMount(async () => {
     function loadSampleDiagram(diagramType){
 		let code =''
 		switch(diagramType){
-			case 'FlowChart' : 
+			case 'DependencyGraph' : 
 			code = `graph LR
   RMG[Relational Model Graphs] --> RE[Relations]
   RMG[Relational Model Graphs] --> SE[Searches]
@@ -189,7 +189,7 @@ onMount(async () => {
 			<Card title="Code" noPadding="true">
 			<div id="sampleLoader">Load sample diagram :<br/>
 				<div class="botton-container">
-				<button on:click={loadFlowChart}>Flow Chart</button>
+				<button on:click={loadDependencyGraph}>Dependency Graph</button>
 				<button on:click={loadSequenceDiagram}>Sequence Diagram</button>
 				<button on:click={loadClassDiagram}>Class Diagram</button>
 				<button on:click={loadStateDiagram}>State Diagram</button>
