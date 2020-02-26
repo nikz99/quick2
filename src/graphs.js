@@ -28,6 +28,15 @@ const graphs = [{
    subgraph SEIP[ ]
 	SE[Searches] --- IP[Index Patterns]
   end`
+},{
+	id: 'HowToMermaid',
+    name: 'Diagram editing process',
+    type: 'flowchart',
+	code: `graph TD
+	OpenAboveLink[Open live editor link above] --> LiveEditor[Edit diagram in live editor]
+	LiveEditor --> CopyCode[Copy the mermaid graph code]
+	CopyCode --> UpdateSrc[Update src/graph.js]
+	UpdateSrc --> Publish[Commit code and raise PR]`
 },
 {
 	id: 'SequenceDiagram',
