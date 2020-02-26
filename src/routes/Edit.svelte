@@ -1,6 +1,7 @@
 <script>
 import { onMount } from 'svelte';
 import { updateCodeStore } from '../code-store.js';
+import { graphs } from '../graphs.js';
 import Editor from '../components/Editor.svelte';
 import Config from '../components/Config.svelte';
 import View from '../components/View.svelte';
@@ -12,6 +13,10 @@ import { fromUrl } from '../code-store.js';
 import pkg from '@mermaid/package.json'
 
 export let mermaidVersion = pkg.version
+
+function loadGraph(graphId) {
+	loadSampleDiagram(graphId);
+}
 
 onMount(async () => {
 	ga('send', 'pageview');
@@ -46,99 +51,10 @@ onMount(async () => {
 		loadSampleDiagram('PieChart');
 	}
 	
-    function loadSampleDiagram(diagramType){
-		let code =''
-		switch(diagramType){
-			case 'DependencyGraph' : 
-			code = `graph LR
-  RMG[Relational Model Graphs] --> RE[Relations]
-  RMG[Relational Model Graphs] --> SE[Searches]
-  GR[Graphs] --> RE[Relations]
-  GR[Graphs] --> SE[Searches]
-  DG[Dashboard Groups] --> DA[Dashboard]
-  DA[Dashboard] -.-> SE[Searches]
-  DA[Dashboard] -.saved filters.-> IP[Index Patterns]
-  VI[Visualization] -.-> SE[Searches]
-  SE[Searches] --> IP[Index Patterns]
-  VI[Visualization] -.saved filters.-> IP[Index Patterns]  
-  RE[Relations] --> SE[Searches]
-  RE[Relations] --> EIDS[EIDS]
-  IP[Index Patterns] -.-> DS[Data Sources]
-					
-					`;
-			break;
-
-			case 'SequenceDiagram' : 
-			code = `sequenceDiagram
-	Alice->>+John: Hello John, how are you?
-	Alice->>+John: John, can you hear me?
-	John-->>-Alice: Hi Alice, I can hear you!
-	John-->>-Alice: I feel great!
-					`;
-			break;
-
-			case 'ClassDiagram' : 
-			code = `classDiagram
-	Animal <|-- Duck
-	Animal <|-- Fish
-	Animal <|-- Zebra
-	Animal : +int age
-	Animal : +String gender
-	Animal: +isMammal()
-	Animal: +mate()
-	class Duck{
-		+String beakColor
-		+swim()
-		+quack()
-	}
-	class Fish{
-		-int sizeInFeet
-		-canEat()
-	}
-	class Zebra{
-		+bool is_wild
-		+run()
-	}
-					`;
-			break;
-
-			case 'StateDiagram' : 
-			code = `stateDiagram
-	[*] --> Still
-	Still --> [*]
-
-	Still --> Moving
-	Moving --> Still
-	Moving --> Crash
-	Crash --> [*]
-					`;
-			break;
-
-			case 'GanttChart' : 
-			code = `gantt
-	title A Gantt Diagram
-	dateFormat  YYYY-MM-DD
-	section Section
-	A task           :a1, 2014-01-01, 30d
-	Another task     :after a1  , 20d
-	section Another
-	Task in sec      :2014-01-12  , 12d
-	another task      : 24d
-					`;
-			break;
-
-		case 'PieChart' :
-			code = `pie title Pets adopted by volunteers
-	"Dogs" : 386
-	"Cats" : 85
-	"Rats" : 15
-					`;
-			break;
-		}
-			
+    function loadSampleDiagram(graphId){
+		let code = graphs.find(graph => graph.id == graphId).code;
 		let newState = { code, mermaid: { theme: 'default' }, updateEditor:true };
 		updateCodeStore(newState);
-
 	}	
 
 </script>
@@ -187,20 +103,18 @@ onMount(async () => {
 	<div id="editor-root">
 		<div id="col1">
 			<Card title="Code" noPadding="true">
-			<div id="sampleLoader">Load sample diagram :<br/>
+			<div id="sampleLoader">Graphs :<br/>
 				<div class="botton-container">
-				<button on:click={loadDependencyGraph}>Dependency Graph</button>
-				<button on:click={loadSequenceDiagram}>Sequence Diagram</button>
-				<button on:click={loadClassDiagram}>Class Diagram</button>
-				<button on:click={loadStateDiagram}>State Diagram</button>
-				<button on:click={loadGanttChart}>Gantt Chart</button>
-				<button on:click={loadPieChart}>Pie Chart </button>
+				{#each graphs as graph, i}
+					<button on:click={() => loadGraph(graph.id)}>{graph.name}</button>
+				{/each}
 			</div>
 			</div>
 				<Editor data={params.data}/>
 			</Card>
 			<Card title="Mermaid Configuration" ><Config /></Card>
 			<Card title='Links'>
+				<Links />
 				<ul className='marketing-links'>
 					<li>
 						<a href='https://mermaid-js.github.io/mermaid' target='_blank'>
@@ -233,10 +147,10 @@ onMount(async () => {
 		</div>
 		<div id="col2">
 			<Card title="Preview"><View /></Card>
-			<Card title="Actions"><Links /></Card>
+			<!-- <Card title="Actions"></Card>
 			<div id="power">
 				Powered by mermaid <Tag color='green'>{mermaidVersion}</Tag>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>
