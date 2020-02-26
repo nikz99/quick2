@@ -112,9 +112,14 @@ let insertSvg = function(svgCode, bindFunctions){
 	#view {
 		border: 1px solor darkred;
 		flex: 1;
+		height: 800px;
+	}
+	svg {
+		height: 100%;
 	}
 	#container {
 		overflow-x: auto;
+		height: 100%;
 	}
 	.error {
 		opacity: 0.5;

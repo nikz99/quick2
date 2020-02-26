@@ -22,11 +22,15 @@ let editorElem = null;
 
 let decorations = [];
 const decArr = [];
-let oldConf =  { theme: 'default' };
+let oldConf =  { 
+	theme: 'default',
+	flowChart: {
+		curve: 'basis'
+	}
+};
 const handleConfUpdate =  conf => {
 	try {
 		JSON.parse(conf);
-		console.log(code);
 		let newState = { code, mermaid: JSON.parse(conf) };
 		oldConf = newState.mermaid;
 		updateCodeStore(newState);
