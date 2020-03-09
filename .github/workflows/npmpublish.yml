@@ -17,3 +17,9 @@ jobs:
           node-version: 12
       - run: npm i
       - run: npm run build
+      - uses: matheusalbino/git-commit@v1.0.1
+        with:
+          user-name: Equal
+          user-email: equal@example.com
+          message: This a commit from Github Actions
+          github-token: ${{ secrets.GITHUB_TOKEN }}
